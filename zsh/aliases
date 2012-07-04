@@ -1,0 +1,28 @@
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+alias ls='ls --color=auto'
+alias lsbig='ls -Slh | head'
+alias lssmall='ls -Slhr | tail'
+alias lsnew='ls -tlh | head'
+alias lsold='ls -tlh | tail'
+alias ll='ls -lh'
+alias l='ls -lh'
+alias la='ls -lha'
+
+alias -g G='| grep'
+alias -g P='| less'
+
+alias -s txt=vim
+alias -s htm=vim
+alias -s html=vim
+alias -s php=vim
+alias -s conf=vim
+alias -s log=vim
+
+hash -d log=/var/log
+hash -d www=/www
+hash -d lib=/var/lib
+hash -d mysql=/var/lib/mysql

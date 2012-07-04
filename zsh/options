@@ -1,0 +1,78 @@
+#setopt no_beep auto_cd complete_in_word correct rm_star_wait transient_rprompt
+setopt no_beep transient_rprompt
+autoload -U compinit && compinit
+autoload -U colors && colors
+
+# less manpage highlighting
+export LESS_TERMCAP_mb=$'\e[01;31m'
+export LESS_TERMCAP_md=$'\e[01;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;44;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[01;32m'
+
+eval `dircolors`
+
+PROMPT='%n@%m:%~%# '
+#PS1="[%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}]$ "
+# ;SPROMPT='lalala'
+#RPROMPT='[%/]'
+RPROMPT='%(?..:()'
+
+#history
+HISTFILE=~/.zsh_history
+SAVEHIST=10000
+HISTSIZE=12000
+#setopt share_history append_history extended_history hist_reduce_blanks
+setopt append_history extended_history hist_reduce_blanks
+
+export EDITOR=vim
+export PAGER=less
+
+zmodload -i zsh/complist
+
+# strg+a and strg+e for beginning and end of line shortcut
+bindkey vi-beginning-of-line "^[a"
+bindkey vi-end-of-line "^[e"
+
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*:default' select-prompt '%SMatch %M   %P%s'
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} ma=0\;41
+
+zstyle ':completion:*:descriptions' format '%S%d%s'
+zstyle ':completion:*:corections' format '%S%d%s'
+zstyle ':completion:*:messages' format '%S%d%s'
+zstyle ':completion:*:warnings' format '%S%d%s'
+
+# kill completion
+zstyle ':completion:*:kill:*' command \
+  'ps xf -u $USER -o pid,%cpu,cmd'
+zstyle ':completion:*:*:kill:*:processes' \
+  list-colors '=(#b) #([0-9]#)*=0=01;31'
+
+# ssh host completion
+hosts=(lordlamer.de
+  saturn.universe.linuxdelta.de
+  mars.universe.linuxdelta.de)
+zstyle ':completion:*:*:((l|nc|)ftp|ssh|scp|ping):*' hosts $hosts
+
+zstyle ':completion::complete:*' rehash true
+
+# completion with not case insensitiv
+zstyle ':completion:*' match-list 'm:{a-zA-Z}={A-Za-z}'
+
+# approximate
+zstyle ':completion:*' completer _complete _correct _approximate
+#zstyle ':completion:*:approximate:*' max-errors 2 numeric
+zstyle ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric)'
+
+# version control
+# autoload -Uz vcs_info
+# zstyle ':vcs_info:*' formats '%s:%b '
+# zstyle ':vcs_info:*' enable git cvs svn hg bzr
+# vcs_info
+
+zle_highlight=(region:bg=19 isearch:bg=red)
+
